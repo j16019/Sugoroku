@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LayoutDemo</string>
+    <string name="title1">Googleマップで行こう、すごろくの旅</string>
+    <string name="message1">タップしてスタート</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="Button1">マップ詳細</string>
+    <string name="player">PlayerName</string>
+    <string name="saikoro">サイコロを振る</string>
+    <string name="masu1">-34,151</string>
+</resources>
