@@ -29,11 +29,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private MarkerOptions markerOptions = new MarkerOptions();
-    private Marker[] marker = new Marker[4];
-    private int num = 0;
+    private Marker[] marker = new Marker[4];//プレイヤーのマーカーの情報を保存
+    private int num = 0;//ターン
 
-    private double zure = 0.001;
+    private double zure = 0.001;//プレイヤーのコマ同士の間隔
 
+    //マスの座標
     private double[][] i_k = {
             {26.2125,127.68111}	//那覇		i_k[0][0],i[0][1]
             ,{28.380746,129.496922}	//奄美大島	i_k[1][0],i[1][1]
@@ -92,6 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ,{45.449592,141.645252}	//稚内市稚内灯台（北海道）i_k[54][0],i[54][1]
     };
 
+    //マスの名前
     private String[] markerM_T = {
             "那覇"//
             ,"奄美大島"//i_k[1][0],i[1][1]
@@ -150,6 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ,"稚内市稚内灯台（北海道）"//i_k[54][0],i[54][1]
     };
 
+    //サイコロの画像のID
     private int[] saikoroI = {
             R.drawable.saikoro_1
             , R.drawable.saikoro_2
@@ -159,23 +162,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             , R.drawable.saikoro_6
     };
 
+    //プレイヤーのマーカーの画像のID
     private BitmapDescriptor[] markerI_P = new BitmapDescriptor[4];
 
+    //マスのマーカーの色
     private BitmapDescriptor[] markerI_C = new BitmapDescriptor[6];
 
-    private final int[] kugiri = {1, 9, 16, 29, 36, 45, 54};
+    private final int[] kugiri = {1, 9, 16, 29, 36, 45, 54};//色の変更点
     private final int kugiriN = 6; //kugiriの配列数-1
 
     private final int goal = 54; //i_kの配列の数 - 1
 
-    //LatLng[] koma = new LatLng[4];
     private LatLng[] komaP = new LatLng[4];
     private int[] koma = {0, 0, 0, 0};
     private int komaN;
 
-    private Button button;
     private Button saikoroButton;
-    private boolean saikoroCheck = false;
 
     private int saikoroM;
 
@@ -218,9 +220,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (goalCheck[num]) {
                     saikoroButton.setEnabled(false);
 
-                    keycheck = false;
+                    keycheck = false;//バックキーをoff
 
-                    saikoroShake();
+                    saikoroShake();//サイコロを振る
                 }
             }
         });
@@ -235,10 +237,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         uiSettings = mMap.getUiSettings();
 
-        uiSettings.setMapToolbarEnabled(false);
+        uiSettings.setMapToolbarEnabled(false);//GoogleMapの使わないボタンを消去
         //uiSettings.setScrollGesturesEnabled(false);
 
-        mMap.setMinZoomPreference(6.5f);
+        mMap.setMinZoomPreference(6.5f);//縮小の最大を設定
 
         markerI_P[0] = BitmapDescriptorFactory.fromResource(R.drawable.p1);
         markerI_P[1] = BitmapDescriptorFactory.fromResource(R.drawable.p2);
@@ -257,6 +259,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         iniP();
     }
 
+    //マスのマーカーの初期化
     public void iniM() {
         PolylineOptions polylineOptions = new PolylineOptions().geodesic(true);
         LatLng latLng;
@@ -298,6 +301,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addPolyline(polylineOptions);
     }
 
+    //プレイヤーのマーカーの初期化
     public void iniP() {
         for (int i = 3; i >= 0; i--) {
             i_k_0 = i_k[0][0];
@@ -322,10 +326,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .setPositiveButton("OK", null)
                 .setCancelable(false)
                 .show();
-
-        //toastMake(titleT,0,-200);
     }
 
+    //サイコロを振る
     public void saikoroShake(){
 
         handler.post(sr);
@@ -364,6 +367,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     };
     //handler.post(sr);
 
+    //サイコロの結果を表示
     public void moveD(){
         new AlertDialog.Builder(this)
                 .setTitle("確認ダイアログ")
@@ -378,6 +382,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .show();
     }
 
+    //プレイヤーのマーカーの移動
     public void moveM() {
         titleT = (num + 1) + "P";
 
@@ -436,6 +441,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     };
     //handler.post(mr);
 
+    //ゴール確認
     public void nextD(){
         if (!goalCheck[num]) {
 
@@ -463,6 +469,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         saikoroButton.setEnabled(true);
     }
 
+    //移動した結果を出力
     public void nextT(){
         mMap.moveCamera(CameraUpdateFactory.newLatLng(komaP[num]));
 
@@ -481,6 +488,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .show();
     }
 
+    //サイコロの目
     public int randomM() {
         int i;
 
